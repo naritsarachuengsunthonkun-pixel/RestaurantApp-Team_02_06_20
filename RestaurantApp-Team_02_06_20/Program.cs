@@ -70,7 +70,7 @@ namespace RestaurantApp_Team_02_06_20
         // คน C รับผิดชอบ
         static void ShowSummary()
         {
-            Console.WriteLine("Not completed");
+            Console.WriteLine("Not casdasdsadadompleted");
         }
     }
 
