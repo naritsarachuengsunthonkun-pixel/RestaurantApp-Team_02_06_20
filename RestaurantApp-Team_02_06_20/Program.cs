@@ -30,6 +30,8 @@ namespace RestaurantApp_Team_02_06_20
                 Console.WriteLine("1. Add Restaurant");
                 Console.WriteLine("2. Show Good Rating");
                 Console.WriteLine("3. Show Summary");
+                Console.WriteLine("4. Search By Type");
+                Console.WriteLine("5. Delete Restaurant");
                 Console.WriteLine("0. Exit");
                 Console.Write("Select Menu: ");
 
