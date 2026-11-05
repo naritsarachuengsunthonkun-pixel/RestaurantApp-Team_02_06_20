@@ -30,6 +30,8 @@ namespace RestaurantApp_Team_02_06_20
                 Console.WriteLine("1. Add Restaurant");
                 Console.WriteLine("2. Show Good Rating");
                 Console.WriteLine("3. Show Summary");
+                Console.WriteLine("4. Search By Type");
+                Console.WriteLine("5. Delete Restaurant");
                 Console.WriteLine("0. Exit");
                 Console.Write("Select Menu: ");
 
@@ -51,7 +53,6 @@ namespace RestaurantApp_Team_02_06_20
                         break;
                     case "5":
                         DeleteRestaurant();
-
                         break;
                     case "0":
                         return;
@@ -83,13 +84,34 @@ namespace RestaurantApp_Team_02_06_20
 
         static void SearchByType()
         {
-            Console.WriteLine("Not completed");
+            Console.Write("Type to search: ");
+            string type = Console.ReadLine();
+
+            var found = restaurants
+                .Where(r => r.Type.Equals(type, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (found.Count == 0)
+            {
+                Console.WriteLine("No restaurants found.");
+                return;
+            }
+
+            Console.WriteLine($"Restaurants of type '{type}':");
+            foreach (var r in found)
+                Console.WriteLine($"- {r.Name} : {r.Rating}");
         }
 
 
         static void DeleteRestaurant()
         {
-            Console.WriteLine("Not completed");
+            Console.Write("Name to delete: ");
+            string name = Console.ReadLine();
+
+            int removed = restaurants.RemoveAll(
+                r => r.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+            Console.WriteLine(removed > 0 ? "Deleted." : "Restaurant not found.");
         }
     }
 
