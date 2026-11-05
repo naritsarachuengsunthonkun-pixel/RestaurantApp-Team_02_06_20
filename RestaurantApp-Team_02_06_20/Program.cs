@@ -30,6 +30,8 @@ namespace RestaurantApp_Team_02_06_20
                 Console.WriteLine("1. Add Restaurant");
                 Console.WriteLine("2. Show Good Rating");
                 Console.WriteLine("3. Show Summary");
+                Console.WriteLine("4. TEST");
+                Console.WriteLine("5. TESTER");
                 Console.WriteLine("0. Exit");
                 Console.Write("Select Menu: ");
 
@@ -46,6 +48,12 @@ namespace RestaurantApp_Team_02_06_20
                     case "3":
                         ShowSummary();
                         break;
+                    case "4":
+                        ShowSetting();
+                        break;
+                            case "5":
+                        Showtesterx();
+                        break;
                     case "0":
                         return;
                     default:
@@ -54,6 +62,7 @@ namespace RestaurantApp_Team_02_06_20
                 }
             }
         }
+
 
         static void AddRestaurant()
         {
@@ -87,6 +96,15 @@ namespace RestaurantApp_Team_02_06_20
                 Console.WriteLine($"  {group.Key}: {group.Count()}");
             }
         }
-    }
+            private static void ShowSetting()
+        {
+            // ใส่ Code สำหรับแสดงผลหน้า Setting ที่นี่
+            Console.WriteLine("Tester xxx");
+        }
+            private  static void Showtesterx()
+         {
+            Console.WriteLine("tester xd");
+         }
 
-}
+    }
+    }
