@@ -65,7 +65,21 @@ namespace RestaurantApp_Team_02_06_20
         // คน A รับผิดชอบ
         static void AddRestaurant()
         {
-            
+            Console.Write("Name: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Type: ");
+            string type = Console.ReadLine();
+
+            Console.Write("Rating (0-5): ");
+            if (!double.TryParse(Console.ReadLine(), out double rating) || rating < 0 || rating > 5)
+            {
+                Console.WriteLine("Invalid rating. Restaurant not added.");
+                return;
+            }
+
+            restaurants.Add(new Restaurant { Name = name, Type = type, Rating = rating });
+            Console.WriteLine("Restaurant added.");
         }
 
         // คน B รับผิดชอบ
