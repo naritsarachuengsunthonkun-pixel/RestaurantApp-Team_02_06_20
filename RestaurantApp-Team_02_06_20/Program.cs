@@ -46,6 +46,13 @@ namespace RestaurantApp_Team_02_06_20
                     case "3":
                         ShowSummary();
                         break;
+                    case "4":
+                        SearchByType();
+                        break;
+                    case "5":
+                        DeleteRestaurant();
+
+                        break;
                     case "0":
                         return;
                     default:
@@ -69,6 +76,18 @@ namespace RestaurantApp_Team_02_06_20
 
         // คน C รับผิดชอบ
         static void ShowSummary()
+        {
+            Console.WriteLine("Not completed");
+        }
+
+
+        static void SearchByType()
+        {
+            Console.WriteLine("Not completed");
+        }
+
+
+        static void DeleteRestaurant()
         {
             Console.WriteLine("Not completed");
         }
