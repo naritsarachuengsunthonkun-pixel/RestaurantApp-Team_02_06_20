@@ -55,22 +55,80 @@ namespace RestaurantApp_Team_02_06_20
             }
         }
 
-        // คน A รับผิดชอบ
         static void AddRestaurant()
         {
-            Console.WriteLine("Not completed");
+            Console.Write("Restaurant name: ");
+            string name = Console.ReadLine()?.Trim();
+            if (string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Name cannot be empty.");
+                return;
+            }
+
+            Console.Write("Type (e.g. Fast Food, Japanese): ");
+            string type = Console.ReadLine()?.Trim();
+            if (string.IsNullOrEmpty(type))
+            {
+                Console.WriteLine("Type cannot be empty.");
+                return;
+            }
+
+            Console.Write("Rating (0 - 5): ");
+            if (!double.TryParse(Console.ReadLine(), out double rating) || rating < 0 || rating > 5)
+            {
+                Console.WriteLine("Invalid rating. Please enter a number between 0 and 5.");
+                return;
+            }
+
+            restaurants.Add(new Restaurant { Name = name, Type = type, Rating = rating });
+            Console.WriteLine($"Added {name} successfully.");
         }
 
         // คน B รับผิดชอบ
+        const double GoodRatingThreshold = 4.5;
+
         static void ShowGoodRating()
         {
-            Console.WriteLine("Not completed");
+            var good = restaurants
+                .Where(r => r.Rating >= GoodRatingThreshold)
+                .OrderByDescending(r => r.Rating)
+                .ToList();
+
+            Console.WriteLine($"\n--- Restaurants with rating >= {GoodRatingThreshold} ---");
+
+            if (good.Count == 0)
+            {
+                Console.WriteLine("No restaurants found.");
+                return;
+            }
+
+            foreach (var r in good)
+            {
+                Console.WriteLine($"{r.Name} ({r.Type}) - {r.Rating:F1}");
+            }
         }
 
         // คน C รับผิดชอบ
         static void ShowSummary()
         {
-            Console.WriteLine("Not completed");
+            if (restaurants.Count == 0)
+            {
+                Console.WriteLine("No restaurants to summarize.");
+                return;
+            }
+
+            var best = restaurants.OrderByDescending(r => r.Rating).First();
+
+            Console.WriteLine("\n--- Summary ---");
+            Console.WriteLine($"Total restaurants : {restaurants.Count}");
+            Console.WriteLine($"Average rating    : {restaurants.Average(r => r.Rating):F2}");
+            Console.WriteLine($"Highest rated     : {best.Name} ({best.Rating:F1})");
+
+            Console.WriteLine("\nCount by type:");
+            foreach (var group in restaurants.GroupBy(r => r.Type))
+            {
+                Console.WriteLine($"  {group.Key}: {group.Count()}");
+            }
         }
     }
 
