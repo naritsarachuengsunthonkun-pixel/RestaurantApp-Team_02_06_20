@@ -77,7 +77,24 @@ namespace RestaurantApp_Team_02_06_20
         // คน C รับผิดชอบ
         static void ShowSummary()
         {
-            Console.WriteLine("Not completed");
+            if (restaurants.Count == 0)
+            {
+                Console.WriteLine("No restaurants to summarize.");
+                return;
+            }
+
+            var best = restaurants.OrderByDescending(r => r.Rating).First();
+
+            Console.WriteLine("\n--- Summary ---");
+            Console.WriteLine($"Total restaurants : {restaurants.Count}");
+            Console.WriteLine($"Average rating    : {restaurants.Average(r => r.Rating):F2}");
+            Console.WriteLine($"Highest rated     : {best.Name} ({best.Rating:F1})");
+
+            Console.WriteLine("\nCount by type:");
+            foreach (var group in restaurants.GroupBy(r => r.Type))
+            {
+                Console.WriteLine($"  {group.Key}: {group.Count()}");
+            }
         }
 
 
