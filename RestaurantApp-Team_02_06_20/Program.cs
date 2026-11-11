@@ -108,7 +108,64 @@ namespace RestaurantApp_Team_02_06_20
 
         static void DeleteRestaurant()
         {
-            Console.WriteLine("Not completed");
+            Console.WriteLine("\n--- Delete Restaurant ---");
+
+            if (restaurants.Count == 0)
+            {
+                Console.WriteLine("No restaurants to delete.");
+                return;
+            }
+
+            
+            Console.WriteLine("Current restaurants:");
+            ShowRestaurantList();
+
+            Console.Write("\nEnter restaurant name to delete: ");
+            string name = Console.ReadLine().Trim();
+
+            if (string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Name cannot be empty.");
+                return;
+            }
+
+            var target = restaurants.FirstOrDefault(
+                r => r.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+            if (target == null)
+            {
+                Console.WriteLine("Restaurant not found.");
+                return;
+            }
+
+            
+            Console.Write($"Are you sure you want to delete {target.Name}? (y/n): ");
+            string confirm = Console.ReadLine().Trim().ToLower();
+
+            if (confirm != "y")
+            {
+                Console.WriteLine("Delete cancelled.");
+                return;
+            }
+
+            restaurants.Remove(target);
+            Console.WriteLine($"\nDeleted {target.Name} successfully.");
+
+            
+            Console.WriteLine("\nUpdated restaurants:");
+            ShowRestaurantList();
+        }
+
+       
+        static void ShowRestaurantList()
+        {
+            Console.WriteLine($"{"Name",-15} {"Type",-12} {"Rating"}");
+            Console.WriteLine(new string('-', 36));
+
+            foreach (var r in restaurants)
+            {
+                Console.WriteLine($"{r.Name,-15} {r.Type,-12} {r.Rating:F1}");
+            }
         }
     }
 
