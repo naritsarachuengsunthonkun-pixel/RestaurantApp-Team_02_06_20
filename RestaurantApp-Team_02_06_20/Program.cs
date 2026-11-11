@@ -50,11 +50,14 @@ namespace RestaurantApp_Team_02_06_20
                         ShowSummary();
                         break;
                     case "4":
+                        ShowSetting();
+                        break;
+                            case "5":
+                        Showtesterx();
                         SearchByType();
                         break;
                     case "5":
                         DeleteRestaurant();
-
                         break;
                     case "0":
                         return;
@@ -65,9 +68,11 @@ namespace RestaurantApp_Team_02_06_20
             }
         }
 
-        // คน A รับผิดชอบ
+
         static void AddRestaurant()
         {
+
+
             Console.WriteLine("\n--- Add Restaurant ---");
 
             // แสดงข้อมูลร้านที่มีอยู่ก่อน
@@ -122,11 +127,15 @@ namespace RestaurantApp_Team_02_06_20
             {
                 Console.WriteLine($"{r.Name,-15} {r.Type,-12} {r.Rating:F1}");
             }
+
         }
 
         // คน B รับผิดชอบ
         static void ShowGoodRating()
         {
+
+
+
             const double goodRating = 4.5;
 
             var good = restaurants
@@ -151,6 +160,7 @@ namespace RestaurantApp_Team_02_06_20
             }
 
             Console.WriteLine($"\nTotal: {good.Count} restaurant(s)");
+
         }
 
         // คน C รับผิดชอบ
@@ -175,7 +185,6 @@ namespace RestaurantApp_Team_02_06_20
                 Console.WriteLine($"  {group.Key}: {group.Count()}");
             }
         }
-
 
         static void SearchByType()
         {
@@ -281,6 +290,10 @@ namespace RestaurantApp_Team_02_06_20
                 Console.WriteLine($"{r.Name,-15} {r.Type,-12} {r.Rating:F1}");
             }
         }
-    }
+            private  static void Showtesterx()
+         {
+            Console.WriteLine("tester xd");
+         }
 
-}
+    }
+    }
