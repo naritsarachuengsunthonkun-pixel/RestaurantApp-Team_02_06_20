@@ -20,6 +20,7 @@ namespace RestaurantApp_Team_02_06_20
         new Restaurant { Name = "KFC", Type = "Fast Food", Rating = 4.2 },
         new Restaurant { Name = "MK", Type = "Suki", Rating = 4.7 },
         new Restaurant { Name = "Fuji", Type = "Japanese", Rating = 4.8 }
+
     };
 
         static void Main(string[] args)
@@ -67,7 +68,60 @@ namespace RestaurantApp_Team_02_06_20
         // คน A รับผิดชอบ
         static void AddRestaurant()
         {
+            Console.WriteLine("\n--- Add Restaurant ---");
 
+            // แสดงข้อมูลร้านที่มีอยู่ก่อน
+            Console.WriteLine("Current restaurants:");
+            ShowRestaurantList();
+
+            Console.Write("\nName: ");
+            string name = Console.ReadLine().Trim();
+            if (string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Name cannot be empty.");
+                return;
+            }
+
+            // กันชื่อซ้ำ (ไม่สนตัวพิมพ์เล็ก/ใหญ่)
+            if (restaurants.Any(r => r.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            {
+                Console.WriteLine("This restaurant already exists.");
+                return;
+            }
+
+            Console.Write("Type: ");
+            string type = Console.ReadLine().Trim();
+            if (string.IsNullOrEmpty(type))
+            {
+                Console.WriteLine("Type cannot be empty.");
+                return;
+            }
+
+            Console.Write("Rating (0 - 5): ");
+            if (!double.TryParse(Console.ReadLine(), out double rating) || rating < 0 || rating > 5)
+            {
+                Console.WriteLine("Invalid rating. Please enter a number between 0 and 5.");
+                return;
+            }
+
+            restaurants.Add(new Restaurant { Name = name, Type = type, Rating = rating });
+            Console.WriteLine($"\nAdded {name} successfully.");
+
+            // แสดงรายการหลังเพิ่ม
+            Console.WriteLine("\nUpdated restaurants:");
+            ShowRestaurantList();
+        }
+
+        // เมธอดช่วยแสดงรายการร้านทั้งหมด
+        static void ShowRestaurantList()
+        {
+            Console.WriteLine($"{"Name",-15} {"Type",-12} {"Rating"}");
+            Console.WriteLine(new string('-', 36));
+
+            foreach (var r in restaurants)
+            {
+                Console.WriteLine($"{r.Name,-15} {r.Type,-12} {r.Rating:F1}");
+            }
         }
 
         // คน B รับผิดชอบ
