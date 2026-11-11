@@ -127,7 +127,30 @@ namespace RestaurantApp_Team_02_06_20
         // คน B รับผิดชอบ
         static void ShowGoodRating()
         {
-            Console.WriteLine("Not completed");
+            const double goodRating = 4.5;
+
+            var good = restaurants
+                .Where(r => r.Rating >= goodRating)
+                .OrderByDescending(r => r.Rating)
+                .ToList();
+
+            Console.WriteLine($"\n--- Good Rating (>= {goodRating:F1}) ---");
+
+            if (good.Count == 0)
+            {
+                Console.WriteLine("No restaurants with good rating.");
+                return;
+            }
+
+            Console.WriteLine($"{"Name",-15} {"Type",-12} {"Rating"}");
+            Console.WriteLine(new string('-', 36));
+
+            foreach (var r in good)
+            {
+                Console.WriteLine($"{r.Name,-15} {r.Type,-12} {r.Rating:F1}");
+            }
+
+            Console.WriteLine($"\nTotal: {good.Count} restaurant(s)");
         }
 
         // คน C รับผิดชอบ
