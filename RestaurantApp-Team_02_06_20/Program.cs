@@ -20,6 +20,7 @@ namespace RestaurantApp_Team_02_06_20
         new Restaurant { Name = "KFC", Type = "Fast Food", Rating = 4.2 },
         new Restaurant { Name = "MK", Type = "Suki", Rating = 4.7 },
         new Restaurant { Name = "Fuji", Type = "Japanese", Rating = 4.8 }
+
     };
 
         static void Main(string[] args)
@@ -30,8 +31,8 @@ namespace RestaurantApp_Team_02_06_20
                 Console.WriteLine("1. Add Restaurant");
                 Console.WriteLine("2. Show Good Rating");
                 Console.WriteLine("3. Show Summary");
-                Console.WriteLine("4. TEST");
-                Console.WriteLine("5. TESTER");
+                Console.WriteLine("4. Search By Type");
+                Console.WriteLine("5. Delete Restaurant");
                 Console.WriteLine("0. Exit");
                 Console.Write("Select Menu: ");
 
@@ -53,6 +54,10 @@ namespace RestaurantApp_Team_02_06_20
                         break;
                             case "5":
                         Showtesterx();
+                        SearchByType();
+                        break;
+                    case "5":
+                        DeleteRestaurant();
                         break;
                     case "0":
                         return;
@@ -66,11 +71,95 @@ namespace RestaurantApp_Team_02_06_20
 
         static void AddRestaurant()
         {
+
+
+            Console.WriteLine("\n--- Add Restaurant ---");
+
+            // แสดงข้อมูลร้านที่มีอยู่ก่อน
+            Console.WriteLine("Current restaurants:");
+            ShowRestaurantList();
+
+            Console.Write("\nName: ");
+            string name = Console.ReadLine().Trim();
+            if (string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Name cannot be empty.");
+                return;
+            }
+
+            // กันชื่อซ้ำ (ไม่สนตัวพิมพ์เล็ก/ใหญ่)
+            if (restaurants.Any(r => r.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            {
+                Console.WriteLine("This restaurant already exists.");
+                return;
+            }
+
+            Console.Write("Type: ");
+            string type = Console.ReadLine().Trim();
+            if (string.IsNullOrEmpty(type))
+            {
+                Console.WriteLine("Type cannot be empty.");
+                return;
+            }
+
+            Console.Write("Rating (0 - 5): ");
+            if (!double.TryParse(Console.ReadLine(), out double rating) || rating < 0 || rating > 5)
+            {
+                Console.WriteLine("Invalid rating. Please enter a number between 0 and 5.");
+                return;
+            }
+
+            restaurants.Add(new Restaurant { Name = name, Type = type, Rating = rating });
+            Console.WriteLine($"\nAdded {name} successfully.");
+
+            // แสดงรายการหลังเพิ่ม
+            Console.WriteLine("\nUpdated restaurants:");
+            ShowRestaurantList();
+        }
+
+        // เมธอดช่วยแสดงรายการร้านทั้งหมด
+        static void ShowRestaurantList()
+        {
+            Console.WriteLine($"{"Name",-15} {"Type",-12} {"Rating"}");
+            Console.WriteLine(new string('-', 36));
+
+            foreach (var r in restaurants)
+            {
+                Console.WriteLine($"{r.Name,-15} {r.Type,-12} {r.Rating:F1}");
+            }
+
         }
 
         // คน B รับผิดชอบ
         static void ShowGoodRating()
         {
+
+
+
+            const double goodRating = 4.5;
+
+            var good = restaurants
+                .Where(r => r.Rating >= goodRating)
+                .OrderByDescending(r => r.Rating)
+                .ToList();
+
+            Console.WriteLine($"\n--- Good Rating (>= {goodRating:F1}) ---");
+
+            if (good.Count == 0)
+            {
+                Console.WriteLine("No restaurants with good rating.");
+                return;
+            }
+
+            Console.WriteLine($"{"Name",-15} {"Type",-12} {"Rating"}");
+            Console.WriteLine(new string('-', 36));
+
+            foreach (var r in good)
+            {
+                Console.WriteLine($"{r.Name,-15} {r.Type,-12} {r.Rating:F1}");
+            }
+
+            Console.WriteLine($"\nTotal: {good.Count} restaurant(s)");
 
         }
 
@@ -96,10 +185,110 @@ namespace RestaurantApp_Team_02_06_20
                 Console.WriteLine($"  {group.Key}: {group.Count()}");
             }
         }
-            private static void ShowSetting()
+
+        static void SearchByType()
         {
-            // ใส่ Code สำหรับแสดงผลหน้า Setting ที่นี่
-            Console.WriteLine("Tester xxx");
+            Console.WriteLine("\n--- Search By Type ---");
+
+            // แสดงประเภทที่มีอยู่ เพื่อให้รู้ว่าพิมพ์อะไรได้บ้าง
+            var types = restaurants.Select(r => r.Type).Distinct().ToList();
+            Console.WriteLine("Available types: " + string.Join(", ", types));
+
+            Console.Write("\nEnter type to search: ");
+            string type = Console.ReadLine().Trim();
+
+            if (string.IsNullOrEmpty(type))
+            {
+                Console.WriteLine("Type cannot be empty.");
+                return;
+            }
+
+            // ค้นหาแบบไม่สนตัวพิมพ์ และรองรับการพิมพ์บางส่วน เช่น "jap"
+            var result = restaurants
+                .Where(r => r.Type.IndexOf(type, StringComparison.OrdinalIgnoreCase) >= 0)
+                .OrderByDescending(r => r.Rating)
+                .ToList();
+
+            Console.WriteLine($"\n--- Search Result: {type} ---");
+
+            if (result.Count == 0)
+            {
+                Console.WriteLine("No restaurants found.");
+                return;
+            }
+
+            Console.WriteLine($"{"Name",-15} {"Type",-12} {"Rating"}");
+            Console.WriteLine(new string('-', 36));
+
+            foreach (var r in result)
+            {
+                Console.WriteLine($"{r.Name,-15} {r.Type,-12} {r.Rating:F1}");
+            }
+
+            Console.WriteLine($"\nFound: {result.Count} restaurant(s)");
+        }
+
+
+        static void DeleteRestaurant()
+        {
+            Console.WriteLine("\n--- Delete Restaurant ---");
+
+            if (restaurants.Count == 0)
+            {
+                Console.WriteLine("No restaurants to delete.");
+                return;
+            }
+
+            
+            Console.WriteLine("Current restaurants:");
+            ShowRestaurantList();
+
+            Console.Write("\nEnter restaurant name to delete: ");
+            string name = Console.ReadLine().Trim();
+
+            if (string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Name cannot be empty.");
+                return;
+            }
+
+            var target = restaurants.FirstOrDefault(
+                r => r.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+            if (target == null)
+            {
+                Console.WriteLine("Restaurant not found.");
+                return;
+            }
+
+            
+            Console.Write($"Are you sure you want to delete {target.Name}? (y/n): ");
+            string confirm = Console.ReadLine().Trim().ToLower();
+
+            if (confirm != "y")
+            {
+                Console.WriteLine("Delete cancelled.");
+                return;
+            }
+
+            restaurants.Remove(target);
+            Console.WriteLine($"\nDeleted {target.Name} successfully.");
+
+            
+            Console.WriteLine("\nUpdated restaurants:");
+            ShowRestaurantList();
+        }
+
+       
+        static void ShowRestaurantList()
+        {
+            Console.WriteLine($"{"Name",-15} {"Type",-12} {"Rating"}");
+            Console.WriteLine(new string('-', 36));
+
+            foreach (var r in restaurants)
+            {
+                Console.WriteLine($"{r.Name,-15} {r.Type,-12} {r.Rating:F1}");
+            }
         }
             private  static void Showtesterx()
          {
