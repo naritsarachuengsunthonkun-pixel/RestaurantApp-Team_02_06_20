@@ -156,7 +156,44 @@ namespace RestaurantApp_Team_02_06_20
 
         static void SearchByType()
         {
-            Console.WriteLine("Not completed");
+            Console.WriteLine("\n--- Search By Type ---");
+
+            // แสดงประเภทที่มีอยู่ เพื่อให้รู้ว่าพิมพ์อะไรได้บ้าง
+            var types = restaurants.Select(r => r.Type).Distinct().ToList();
+            Console.WriteLine("Available types: " + string.Join(", ", types));
+
+            Console.Write("\nEnter type to search: ");
+            string type = Console.ReadLine().Trim();
+
+            if (string.IsNullOrEmpty(type))
+            {
+                Console.WriteLine("Type cannot be empty.");
+                return;
+            }
+
+            // ค้นหาแบบไม่สนตัวพิมพ์ และรองรับการพิมพ์บางส่วน เช่น "jap"
+            var result = restaurants
+                .Where(r => r.Type.IndexOf(type, StringComparison.OrdinalIgnoreCase) >= 0)
+                .OrderByDescending(r => r.Rating)
+                .ToList();
+
+            Console.WriteLine($"\n--- Search Result: {type} ---");
+
+            if (result.Count == 0)
+            {
+                Console.WriteLine("No restaurants found.");
+                return;
+            }
+
+            Console.WriteLine($"{"Name",-15} {"Type",-12} {"Rating"}");
+            Console.WriteLine(new string('-', 36));
+
+            foreach (var r in result)
+            {
+                Console.WriteLine($"{r.Name,-15} {r.Type,-12} {r.Rating:F1}");
+            }
+
+            Console.WriteLine($"\nFound: {result.Count} restaurant(s)");
         }
 
 
